@@ -1,0 +1,210 @@
+@-webkit-keyframes chartjs-render-animation{
+    from{
+        opacity:0.99
+    }to{
+        opacity:1
+    }
+}
+@keyframes chartjs-render-animation{
+    from{
+        opacity:0.99
+    }to{
+        opacity:1
+    }
+}.chartjs-render-monitor{
+    -webkit-animation:chartjs-render-animation 0.001s;
+    animation:chartjs-render-animation 0.001s;
+}
+body {
+    font-size: .875rem;
+}
+
+.feather {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}
+
+/*
+* Sidebar
+*/
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100; /* Behind the navbar */
+    padding: 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 48px; /* Height of navbar */
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+}
+
+.sidebar .nav-link .feather {
+    margin-right: 4px;
+    color: #999;
+}
+
+.sidebar .nav-link.active {
+    color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+    color: inherit;
+}
+
+.sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
+}
+
+/*
+* Navbar
+*/
+
+.navbar-brand {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, .25);
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.navbar .form-control {
+    padding: .75rem 1rem;
+    border-width: 0;
+    border-radius: 0;
+}
+
+.form-control-dark {
+    color: #999;
+    background-color: #999;
+    border-color: #999;
+}
+
+.form-control-dark:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 3px #999;
+}
+
+/*
+* Utilities
+*/
+
+.border-top { 
+    border-top: 1px solid #e5e5e5; 
+}
+.border-bottom { 
+    border-bottom: 1px solid #e5e5e5; 
+}
+
+/* 
+* Home page
+*/
+
+/*
+* Globals
+*/
+
+/* Links */
+a,
+a:focus,
+a:hover {
+color: #999;
+}
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+color: #333;
+text-shadow: none; /* Prevent inheritance from `body` */
+background-color: #999;
+border: .05rem solid #999;
+}
+
+
+/*
+* Base structure
+*/
+.cover-container {
+max-width: 70%;
+}
+
+
+/*
+* Header
+*/
+.masthead {
+margin-bottom: 2rem;
+}
+
+.masthead-brand {
+margin-bottom: 0;
+}
+
+.nav-masthead .nav-link {
+padding: .25rem 0;
+font-weight: 700px;
+color: #999;
+background-color: transparent;
+border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+border-bottom-color: #999;
+}
+
+.nav-masthead .nav-link + .nav-link {
+margin-left: 1rem;
+}
+
+.nav-masthead .active {
+color: #999;
+border-bottom-color: #999;
+}
+
+@media (min-width: 48em) {
+.masthead-brand {
+    float: left;
+}
+.nav-masthead {
+    float: right;
+}
+}
+
+
+/*
+* Cover
+*/
+.cover {
+padding: 0 1.5rem;
+}
+.cover .btn-lg {
+padding: .75rem 1.25rem;
+font-weight: 700;
+}
+
+
+/*
+* Footer
+*/
+.mastfoot {
+color: #999;
+}

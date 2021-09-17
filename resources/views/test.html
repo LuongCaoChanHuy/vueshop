@@ -1,0 +1,45 @@
+<!-- Modal edit Product -->
+<div class="modal fade" id="editProduct" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="editProduct">Edit Product</h5>
+           <p id="producteditSuccess"></p>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <form @submit.prevent="editProduct" enctype="multipart/form-data">
+           <div class="modal-body">
+              <div class="form-group">
+                 <label for="input">Name</label>
+                 <input type="text" class="form-control" v-model="product.name" id="input" placeholder="Name">
+              </div>
+              <div class="form-group">
+                 <label for="input1">author</label>
+                 <input type="text" class="form-control" v-model="product.author" id="input1" placeholder="author">
+              </div>
+              <div class="form-group">
+                 <label for="input2">Price</label>
+                 <input type="number" class="form-control" v-model="product.price" id="input2" placeholder="Price">
+              </div>
+              <div class="form-group">
+                 <label for="input4">Quantity</label>
+                 <input type="number" class="form-control" v-model="product.quantity" id="input4" placeholder="Quantity">
+              </div>
+              <div class="form-group">
+                 <input type="file" accept="image/*" @change="onChange" ref="file" id="image"/>
+                 <br><br>
+                 <div id="preview" class="d-flex justify-content-center">
+                    <img class="shadow p-3 mb-5 bg-white rounded border border-secondary" height="500" width="310" v-if="item.imageUrl" :src="item.imageUrl" />
+                 </div>
+              </div>
+           </div>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" @click="modalClose(pagination.path+`?page=`+pagination.current_page)" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+           </div>
+        </form>
+     </div>
+  </div>
+</div>
