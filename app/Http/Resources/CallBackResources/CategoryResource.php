@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\CallBackResources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +18,6 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'status' => $this->status,
-            'products' => ProductResource::collection($this->products)
         ];
     }
 }

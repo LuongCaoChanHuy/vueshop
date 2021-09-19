@@ -22,12 +22,12 @@ Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanct
 //     Route::delete('delete/{id}', [BookController::class, 'delete']);
 // });
 Route::group(['prefix'=>'/'],function(){
-    Route::resource('users',UserController::class);
+    // Route::resource('users',UserController::class);
     Route::resource('products',ProductController::class);
     Route::resource('categories',CategoryController::class);
-    Route::resource('orders',OrderController::class);
-    Route::resource('orderDetails',OrderDetailController::class);
-    Route::resource('images',ImageController::class);
+    // Route::resource('orders',OrderController::class);
+    // Route::resource('orderDetails',OrderDetailController::class);
+    // Route::resource('images',ImageController::class);
     // Route::get('/',[ProductController::class,'index']);
     // Route::post('add',[ProductController::class,'add']);
     // Route::get('edit/{id}',[ProductController::class,'edit']);

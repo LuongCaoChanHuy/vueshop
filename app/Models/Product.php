@@ -11,12 +11,12 @@ class Product extends Model
     use HasFactory,SoftDeletes;
     
     protected $fillable = [
-        'id','name','author','price','status','quantity','image','created_at','updated_at'
+        'id','name','author','price','status','quantity','image','created_at','updated_at','category_id'
     ];
 
     public function category()
     {
-        return $this->belongsTo(Category::class,'categories_id');
+        return $this->belongsTo(Category::class);
     }
     public function order_details()
     {

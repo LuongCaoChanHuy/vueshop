@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('author');
             $table->decimal('price');
             $table->integer('status')->default(1);
-            $table->bigInteger('categories_id')->nullable();
+            $table->bigInteger('category_id')->nullable();
             $table->integer('quantity');
             $table->string('image');
             $table->timestamps();

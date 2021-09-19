@@ -28,7 +28,7 @@ class ProductFactory extends Factory
             'author'=>$this->faker->name(),
             'price'=>$this->faker->numberBetween($min = 5, $max = 200),
             'quantity'=>$this->faker->numberBetween($min = 5, $max=40),
-            'categories_id'=>rand(1,4),
+            'category_id'=>rand(1,4),
             'image'=> 'default.jpg'
         ];
     }

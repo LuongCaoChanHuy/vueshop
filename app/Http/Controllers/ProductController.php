@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
 use File;
 use Storage;
+
 class ProductController extends Controller
 {
     /**
