@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\AuthorController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::group(['prefix'=>'/'],function(){
     // Route::resource('users',UserController::class);
     Route::resource('products',ProductController::class);
     Route::resource('categories',CategoryController::class);
+    Route::resource('authors',AuthorController::class);
     // Route::resource('orders',OrderController::class);
     // Route::resource('orderDetails',OrderDetailController::class);
     // Route::resource('images',ImageController::class);

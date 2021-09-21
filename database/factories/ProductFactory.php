@@ -25,10 +25,10 @@ class ProductFactory extends Factory
         return [
             //
             'name'=>$this->faker->name(),
-            'author'=>$this->faker->name(),
+            'author_id'=>rand(1,5),
+            'category_id'=>rand(1,5),
             'price'=>$this->faker->numberBetween($min = 5, $max = 200),
             'quantity'=>$this->faker->numberBetween($min = 5, $max=40),
-            'category_id'=>rand(1,4),
             'image'=> 'default.jpg'
         ];
     }

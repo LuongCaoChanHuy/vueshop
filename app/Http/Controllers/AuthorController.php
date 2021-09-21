@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Author;
 use Illuminate\Http\Request;
-use App\Http\Resources\CategoryResource;
+use App\Http\Resources\AuthorResource;
 
-class CategoryController extends Controller
+class AuthorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        return CategoryResource::collection(Category::all());
+        return AuthorResource::collection(Author::all());
     }
 
     /**
@@ -38,62 +38,50 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
-        $category = new Category();
-        $category->name = $request->name;
-        $category->status = 1;
-        
-        $category->save();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\category  $category
+     * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Author $author)
     {
         //
-        return new CategoryResource($category);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\category  $category
+     * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Author $author)
     {
         //
-        return new CategoryResource($category);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\category  $category
+     * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Author $author)
     {
         //
-        $category->name = $request->name;
-        $category->status = 1;
-
-        $category->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\category  $category
+     * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Author $author)
     {
         //
-        $category->delete();
     }
 }

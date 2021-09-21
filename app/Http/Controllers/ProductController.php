@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Author;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
 use File;
@@ -42,7 +44,6 @@ class ProductController extends Controller
         //
         $product = new Product();
         $product->name = $request->name;
-        $product->author = $request->author;
         $product->price = $request->price;
         $product->status = 1;
         $product->quantity = $request->quantity;
@@ -55,7 +56,16 @@ class ProductController extends Controller
         }else{
             $product->image = 'default.jpg';
         }
-        
+        if ($request->author_id == -1) {
+            $author = new Author();
+            $author->name = $request->author_name;
+            $author->status = 1;
+            $author->save();
+            $product->author_id = $author->id;
+        } else {
+            $author = Author::find($request->author_id);
+            $product->author_id = $author->id;
+        }
         $product->save();
         
     }

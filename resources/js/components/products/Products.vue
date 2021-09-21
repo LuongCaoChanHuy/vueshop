@@ -8,7 +8,7 @@
                   <button class="btn btn-sm btn-outline-secondary">Share</button>
                   <button class="btn btn-sm btn-outline-secondary">Export</button>
                </div>
-               <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+               <!-- <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                      <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -16,12 +16,13 @@
                      <line x1="3" y1="10" x2="21" y2="10"></line>
                   </svg>
                   This week
-               </button>
+               </button> -->
+               <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#addProduct">Create</button>
             </div>
          </div>
          <div class="panel panel-default">
             <div class="panel-heading">
-                  <strong> All Resources</strong>
+                  <strong>Search Product</strong>
             </div>
             <div class="row">
                <div class="search-wrapper panel-heading col-sm-12">
@@ -67,7 +68,7 @@
                      <img class="rounded" height="200" width="124" v-bind:src="'/images/'+product.image" /> 
                   </td>
                   <td>{{ product.name }}</td>
-                  <td>{{ product.author }}</td>
+                  <td>{{ product.author.name }}</td>
                   <td>{{ product.category.name }}</td>
                   <td>{{ product.price }}</td>
                   <!-- <td v-if="bookActive">
@@ -80,12 +81,12 @@
                   <td>{{ product.created_at }}</td>
                   <td>{{ product.updated_at }}</td>
                   <td>
-                     <div class="btn-group" role="group">
+                     <div class="btn-group mr-2" role="group">
                         <!-- <router-link :to="{name: 'editproduct', params: { id:product.id }}" class="btn btn-primary">Edit
                            </router-link> -->
-                        <button class="btn btn-success" data-toggle="modal" data-target="#addProduct">Add</button>
-                        <button class="btn btn-warning" @click="editProduct(product)" data-toggle="modal" data-target="#addProduct" >Edit</button>
-                        <button class="btn btn-danger" @click="deleteProduct(product.id)">Delete</button>
+                        <!-- <button class="btn btn-success" data-toggle="modal" data-target="#addProduct">Add</button> -->
+                        <button class="btn btn-sm btn-outline-secondary" @click="editProduct(product)" data-toggle="modal" data-target="#addProduct" >Edit</button>
+                        <button class="btn btn-sm btn-outline-secondary" @click="deleteProduct(product.id)">Delete</button>
                      </div>
                   </td>
                </tr>
@@ -126,7 +127,7 @@
          </nav>
       </div>
    </main>
-   <!-- Modal Add Product -->
+   <!-- Modal Add & Edit Product -->
    <div class="modal fade" id="addProduct" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
          <div class="modal-content">
@@ -145,7 +146,22 @@
                   </div>
                   <div class="form-group">
                      <label for="input1">author</label>
-                     <input type="text" class="form-control" v-model="product.author" id="input1" placeholder="author">
+                     <input type="text" class="form-control" v-model="inputAuthor" id="input1" placeholder="author">
+                     <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                        <table class="table table-bordered table-striped mb-0">
+                           <tbody>
+                              <tr v-for="author in filterAuthor(this.authors)" :key="author.name">
+                                 <td @click="bindAuthor(author)"><a target="_blank">{{author.name}}</a></td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="input3">category</label>
+                     <select class="form-control" id="selectCategory">
+                        <option v-for="category in categories" :key="category.id" value="{{category.id}}">{{ category.name }}</option>
+                     </select>
                   </div>
                   <div class="form-group">
                      <label for="input2">Price</label>
@@ -183,31 +199,27 @@
    export default {
        data() {
            return {
-               products:[]
-               ,bookActive: true
-               ,pagination:{}
+              //object
+               products:[]  
                ,product:{}
+               ,authors:[]
+               ,author:{}
+               ,categories:[]
+               ,category:{}
                ,item:{
-                  image : null,
-                  imageUrl: null
+                  image:null,
+                  imageUrl:null
                }
                ,file:{}
+               ,pagination:{}  
                ,edit:false
-               ,searchQuery: null,
-               resources:[
-                     {title:"ABE Attendance",uri:"aaaa.com",category:"a",icon:null},
-                     {title:"Accounting Services",uri:"aaaa.com",category:"a",icon:null},
-                     {title:"Administration",uri:"aaaa.com",category:"a",icon:null},
-                     {title:"Advanced Student Lookup",uri:"bbbb.com",category:"b",icon:null},
-                     {title:"Art & Sciences",uri:"bbbb.com",category:"b",icon:null},
-                     {title:"Auxiliares Services",uri:"bbbb.com",category:"b",icon:null},
-                     {title:"Basic Skills",uri:"cccc.com",category:"c",icon:null},
-                     {title:"Board of Trustees",uri:"dddd.com",category:"d",icon:null}
-               ]
+               ,searchQuery:null
+               ,inputAuthor:null   
            }
        },
        created() {
            this.fetchProducts();
+           
        },
        methods: {
             fetchProducts(page_url){
@@ -219,20 +231,40 @@
                  .then(response => {
                      this.products = response.data;
                      vm.makePagination(response.meta,response.links);
-                     console.log(response);  
+                     
                  })
                  .catch(function (error) {
                      console.error(error);
                  });
-               })
+                 fetch('/api/authors')
+                 .then(response=>response.json())
+                 .then(response => {
+                     this.authors = response.data;
+                     // console.log(response.data);
+                 })
+                 .catch(function (error) {
+                     console.error(error);
+                 });
+                 fetch('/api/categories')
+                 .then(response=>response.json())
+                 .then(response => {
+                     this.categories = response.data;
+                 })
+                 .catch(function (error) {
+                     console.error(error);
+                 });
+               });
             },
             addProduct() {
               if(this.edit == false){
                let formData = new FormData();
                formData.append('name',this.product.name);
-               formData.append('author',this.product.author);
+               formData.append('author_id',this.author.id);
+               formData.append('author_name',this.inputAuthor);
+               formData.append('category_id',document.getElementById("selectCategory"));
                formData.append('price',this.product.price);
                formData.append('quantity',this.product.quantity);
+               console.log(this.category.id);
                if(document.getElementById('image').files[0]){
                   formData.append('image',document.getElementById('image').files[0]);
                }
@@ -300,14 +332,17 @@
                this.pagination = pagination;
             },
             onChange(e) {
-               document.getElementById('showImg').setAttribute('hidden','nullabled');
+               // document.getElementById('showImg').setAttribute('hidden','nullabled');
                const file = e.target.files[0];
                this.image = file;
                this.item.imageUrl = URL.createObjectURL(file);
             },
             modalClose(page){
+               this.product.name = "";
+               this.product.price = 0;
+               this.product.quantity = 0;
+               this.edit = false;
                this.fetchProducts(page);
-                  this.edit = false;
             },
             resultQuery(resources){
                if(this.searchQuery){
@@ -318,6 +353,21 @@
                }else{
                   return resources;
                }
+            },
+            filterAuthor(resources){
+               if(this.inputAuthor){
+                  return resources.filter((item)=>{
+                     return this.inputAuthor.toLowerCase()
+                     .split(' ').every(v => item.name.toLowerCase().includes(v))
+                  })
+               }else{
+                  this.author.id = -1;
+                  return resources;
+               }
+            },
+            bindAuthor(author){
+               this.inputAuthor = author.name;
+               this.author = author;
             }
        },
        beforeRouteEnter(to, from, next) {
@@ -330,6 +380,14 @@
 </script>
 <style>
    .uploading-image{
-   display:flex;
+      display:flex;
+   }
+   .my-custom-scrollbar {
+      position: relative;
+      height: 200px;
+      overflow: auto;
+   }
+   .table-wrapper-scroll-y {
+      display: block;
    }
 </style>

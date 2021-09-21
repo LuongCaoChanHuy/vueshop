@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\CallBackResources\CategoryResource;
-
+use App\Http\Resources\CallBackResources\AuthorResource;
 class ProductResource extends JsonResource
 {
     /**
@@ -19,8 +19,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'author' => $this->author,
-            // 'products' => ProductResource::collection($this->whenLoaded('products')),
+            'author' => new AuthorResource($this->author),
             'category' => new CategoryResource($this->category),
             // 'order_details' => OrderDetailResource::collection($this->order_details),
             // 'images' => ImageResource::collection($this->Resource),
