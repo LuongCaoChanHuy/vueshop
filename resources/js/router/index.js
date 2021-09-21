@@ -10,7 +10,7 @@ import Dashboard from '../pages/Dashboard.vue';
 // PRODUCTS
 import Products from '../components/products/Products.vue';
 // CATEGORY
-import Category from '../components/category/Categories.vue';
+import Categories from '../components/categories/Categories.vue';
 export const routes = [
     //home
     {
@@ -52,8 +52,26 @@ export const routes = [
     {
         name: 'categories',
         path: '/categories',
-        component: Category
-    }
+        component: Categories
+    },
+    //authors
+    // {
+    //     name: 'authors',
+    //     path: '/authors',
+    //     component: Authors
+    // },
+    // //orders
+    // {
+    //     name: 'orders',
+    //     path: '/orders',
+    //     component: Orders
+    // },
+    // //customers
+    // {
+    //     name: 'customers',
+    //     path: '/customers',
+    //     component: Customers
+    // }
 ];
 
 const router = createRouter({

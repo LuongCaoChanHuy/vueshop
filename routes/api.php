@@ -27,12 +27,7 @@ Route::group(['prefix'=>'/'],function(){
     Route::resource('products',ProductController::class);
     Route::resource('categories',CategoryController::class);
     Route::resource('authors',AuthorController::class);
-    // Route::resource('orders',OrderController::class);
-    // Route::resource('orderDetails',OrderDetailController::class);
-    // Route::resource('images',ImageController::class);
-    // Route::get('/',[ProductController::class,'index']);
-    // Route::post('add',[ProductController::class,'add']);
-    // Route::get('edit/{id}',[ProductController::class,'edit']);
-    // Route::post('update/{id}',[ProductController::class,'update']);
-    // Route::delete('delete/{id}',[ProductController::class,'delete']);
+
+    // search
+    Route::get('products-search',[ProductController::class, 'search']);
 });

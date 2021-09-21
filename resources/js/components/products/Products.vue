@@ -8,6 +8,7 @@
                   <button class="btn btn-sm btn-outline-secondary">Share</button>
                   <button class="btn btn-sm btn-outline-secondary">Export</button>
                </div>
+               <button class="btn btn-sm btn-outline-secondary" @click="showSearch">Search</button>
                <!-- <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -17,10 +18,10 @@
                   </svg>
                   This week
                </button> -->
-               <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#addProduct">Create</button>
+               <button class="btn btn-sm btn-outline-secondary" @click="createFetch" id="create" data-toggle="modal" data-target="#addProduct">Create</button>
             </div>
          </div>
-         <div class="panel panel-default">
+         <div class="panel panel-default" id="search" style="display:none">
             <div class="panel-heading">
                   <strong>Search Product</strong>
             </div>
@@ -160,7 +161,7 @@
                   <div class="form-group">
                      <label for="input3">category</label>
                      <select class="form-control" id="selectCategory">
-                        <option v-for="category in categories" :key="category.id" value="{{category.id}}">{{ category.name }}</option>
+                        <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
                      </select>
                   </div>
                   <div class="form-group">
@@ -214,12 +215,12 @@
                ,pagination:{}  
                ,edit:false
                ,searchQuery:null
-               ,inputAuthor:null   
+               ,inputAuthor:null
+               ,searchProducts:[]   
            }
        },
        created() {
            this.fetchProducts();
-           
        },
        methods: {
             fetchProducts(page_url){
@@ -231,24 +232,39 @@
                  .then(response => {
                      this.products = response.data;
                      vm.makePagination(response.meta,response.links);
-                     
                  })
                  .catch(function (error) {
                      console.error(error);
                  });
-                 fetch('/api/authors')
+               });
+            },
+            createFetch(){
+               this.$axios.get('/sanctum/csrf-cookie').then(response => {
+                  fetch('/api/authors')
+                  .then(response=>response.json())
+                  .then(response => {
+                        this.authors = response.data;
+                        // console.log(response.data);
+                  })
+                  .catch(function (error) {
+                        console.error(error);
+                  });
+                  fetch('/api/categories')
+                  .then(response=>response.json())
+                  .then(response => {
+                        this.categories = response.data;
+                  })
+                  .catch(function (error) {
+                        console.error(error);
+                  });
+               });
+            },
+            searchFetch(){
+               this.$axios.get('/sanctum/csrf-cookie').then(response => {
+                  fetch('/api/products-search')
                  .then(response=>response.json())
                  .then(response => {
-                     this.authors = response.data;
-                     // console.log(response.data);
-                 })
-                 .catch(function (error) {
-                     console.error(error);
-                 });
-                 fetch('/api/categories')
-                 .then(response=>response.json())
-                 .then(response => {
-                     this.categories = response.data;
+                     this.searchProducts = response.data;
                  })
                  .catch(function (error) {
                      console.error(error);
@@ -257,14 +273,16 @@
             },
             addProduct() {
               if(this.edit == false){
+               var select = document.getElementById('selectCategory');
+				   var option = select.options[select.selectedIndex];
                let formData = new FormData();
                formData.append('name',this.product.name);
                formData.append('author_id',this.author.id);
                formData.append('author_name',this.inputAuthor);
-               formData.append('category_id',document.getElementById("selectCategory"));
+               formData.append('category_id',option.value);
                formData.append('price',this.product.price);
                formData.append('quantity',this.product.quantity);
-               console.log(this.category.id);
+               // console.log(option.value);
                if(document.getElementById('image').files[0]){
                   formData.append('image',document.getElementById('image').files[0]);
                }
@@ -279,9 +297,13 @@
                         });
                 });
               }else{
+                  var select = document.getElementById('selectCategory');
+                  var option = select.options[select.selectedIndex];
                   let formData = new FormData();
                   formData.append('name',this.product.name);
-                  formData.append('author',this.product.author);
+                  formData.append('author_id',this.author.id);
+                  formData.append('author_name',this.inputAuthor);
+                  formData.append('category_id',option.value);
                   formData.append('price',this.product.price);
                   formData.append('quantity',this.product.quantity);
                   if(document.getElementById('image').files[0]){
@@ -368,7 +390,17 @@
             bindAuthor(author){
                this.inputAuthor = author.name;
                this.author = author;
-            }
+            },
+            showSearch(){
+               var x = document.getElementById("search");
+               if (x.style.display === "none") {
+                  x.style.display = "block";
+               } else {
+                  x.style.display = "none";
+               };
+               this.searchFetch();
+               this.products = this.searchProducts;
+            },
        },
        beforeRouteEnter(to, from, next) {
          if (!window.Laravel.isLoggedin) {

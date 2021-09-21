@@ -24,13 +24,22 @@ class ProductController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search()
+    {
+        return ProductResource::collection(Product::all());
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -66,6 +75,7 @@ class ProductController extends Controller
             $author = Author::find($request->author_id);
             $product->author_id = $author->id;
         }
+        $product->category_id = $request->category_id;
         $product->save();
         
     }
