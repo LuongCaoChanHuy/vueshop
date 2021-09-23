@@ -6,6 +6,11 @@
          <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
          <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
          <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap" style="color:#fff">
+               {{ name }}
+            </li>
+         </ul>
+         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
                <a class="nav-link" @click="logout" href="#">Sign out</a>
             </li>
@@ -164,25 +169,7 @@
       </header>
       <router-view></router-view>
    </div>
-   <!-- HOME PAGE -->
-   <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="collapse navbar-collapse">
-       
-          <div class="navbar-nav" v-if="isLoggedIn">
-              <router-link to="/dashboard" class="nav-item nav-link">Dashboard</router-link>
-              <router-link to="/books" class="nav-item nav-link">Books</router-link>
-              <a class="nav-item nav-link" style="cursor: pointer;" @click="logout">Logout</a>
-          </div>
-         
-          <div class="navbar-nav" v-else>
-              <router-link to="/" class="nav-item nav-link">Home</router-link>
-              <router-link to="/login" class="nav-item nav-link">login</router-link>
-              <router-link to="/register" class="nav-item nav-link">Register
-              </router-link>
-              <router-link to="/about" class="nav-item nav-link">About</router-link>
-          </div>
-      </div>
-      </nav> -->
+   <!-- END HOME PAGE -->
 </template>
 <script>
    export default {
@@ -193,9 +180,12 @@
            }
        },
        created() {
-           if (window.Laravel.isLoggedin) {
+            if (window.Laravel.isLoggedin) {
                this.isLoggedIn = true
-           }
+            }
+            if (window.Laravel.user) {
+               this.name = window.Laravel.user.name
+            }
        },
        methods: {
            logout(e) {

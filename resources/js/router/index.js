@@ -18,6 +18,9 @@ import Customers from '../components/customers/Customers.vue';
 // ORDERS
 import Orders from '../components/orders/Orders.vue';
 
+// USER
+import UserHome from '../users/Home.vue';
+
 export const routes = [
     //home
     {
@@ -78,6 +81,12 @@ export const routes = [
         name: 'customers',
         path: '/customers',
         component: Customers
+    },
+    //user home
+    {
+        name: 'users',
+        path: '/users/home',
+        component: UserHome
     }
 ];
 

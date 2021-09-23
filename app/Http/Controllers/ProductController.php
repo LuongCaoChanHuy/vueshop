@@ -115,7 +115,6 @@ class ProductController extends Controller
     {
         //
         $product->name = $request->name;
-        $product->author = $request->author;
         $product->price = $request->price;
         $product->status = 1;
         $product->quantity = $request->quantity;
@@ -125,7 +124,20 @@ class ProductController extends Controller
             $name = time().'_'.$image->getClientOriginalName();
             Storage::disk('public')->put($name,File::get($image));
             $product->image = $name;
+        }else{
+            $product->image = 'default.jpg';
         }
+        if ($request->author_id == -1) {
+            $author = new Author();
+            $author->name = $request->author_name;
+            $author->status = 1;
+            $author->save();
+            $product->author_id = $author->id;
+        } else {
+            $author = Author::find($request->author_id);
+            $product->author_id = $author->id;
+        }
+        $product->category_id = $request->category_id;
         $product->save();
     }
 

@@ -310,6 +310,7 @@
                   if(document.getElementById('image').files[0]){
                      formData.append('image',document.getElementById('image').files[0]);
                   }
+                  console.log(option.value);
                formData.append("_method","PUT");
                 this.$axios.get('/sanctum/csrf-cookie').then(response => {
                     this.$axios.post(`/api/products/${this.product.id}`,formData)
@@ -337,8 +338,9 @@
                })
             },
             editProduct(eproduct){
+               this.createFetch();
               this.product.name = eproduct.name;
-              this.product.author = eproduct.author;
+              this.inputAuthor = eproduct.author.name;
               this.product.price = eproduct.price;
               this.product.quantity = eproduct.quantity;
               this.edit = true;
