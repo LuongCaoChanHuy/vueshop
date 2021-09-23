@@ -2,7 +2,7 @@
    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="table-responsive">
          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Category Manager</h1>
+            <h1 class="h2">Customer Manager</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                <div class="btn-group mr-2">
                   <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -18,12 +18,12 @@
                   </svg>
                   This week
                   </button> -->
-               <button class="btn btn-sm btn-outline-secondary" @click="createFetch" id="create" data-toggle="modal" data-target="#addcategory">Create</button>
+               <button class="btn btn-sm btn-outline-secondary" @click="createFetch" id="create" data-toggle="modal" data-target="#addcustomer">Create</button>
             </div>
          </div>
          <div class="panel panel-default" id="search" style="display:none">
             <div class="panel-heading">
-               <strong>Search category</strong>
+               <strong>Search customer</strong>
             </div>
             <div class="row">
                <div class="search-wrapper panel-heading col-sm-12">
@@ -50,25 +50,29 @@
             <thead>
                <tr>
                   <th>ID</th>
+                 
                   <th>Name</th>
+             
                   <th>Created At</th>
                   <th>Updated At</th>
                   <th>Actions</th>
                </tr>
             </thead>
             <tbody>
-               <tr v-for="category in resultQuery(categories)" :key="category.id">
-                  <td>{{ category.id }}</td>
-                  <td>{{ category.name }}</td>
-                  <td>{{ category.created_at }}</td>
-                  <td>{{ category.updated_at }}</td>
+               <tr v-for="customer in resultQuery(customers)" :key="customer.id">
+                  <td>{{ customer.id }}</td>
+                  
+                  <td>{{ customer.name }}</td>
+               
+                  <td>{{ customer.created_at }}</td>
+                  <td>{{ customer.updated_at }}</td>
                   <td>
                      <div class="btn-group mr-2" role="group">
-                        <!-- <router-link :to="{name: 'editcategory', params: { id:category.id }}" class="btn btn-primary">Edit
+                        <!-- <router-link :to="{name: 'editcustomer', params: { id:customer.id }}" class="btn btn-primary">Edit
                            </router-link> -->
-                        <!-- <button class="btn btn-success" data-toggle="modal" data-target="#addcategory">Add</button> -->
-                        <button class="btn btn-sm btn-outline-secondary" @click="editcategory(category)" data-toggle="modal" data-target="#addcategory" >Edit</button>
-                        <button class="btn btn-sm btn-outline-secondary" @click="deletecategory(category.id)">Delete</button>
+                        <!-- <button class="btn btn-success" data-toggle="modal" data-target="#addcustomer">Add</button> -->
+                        <button class="btn btn-sm btn-outline-secondary" @click="editcustomer(customer)" data-toggle="modal" data-target="#addcustomer" >Edit</button>
+                        <button class="btn btn-sm btn-outline-secondary" @click="deletecustomer(customer.id)">Delete</button>
                      </div>
                   </td>
                </tr>
@@ -92,16 +96,16 @@
             <ul class="pagination">
                <li class="page-item" :class="[{disable:!pagination.prev_page_url}]">
                   <a class="page-link" href="#" aria-label="Previous"
-                     @click="fetchcategories(pagination.prev_page_url)">
+                     @click="fetchcustomers(pagination.prev_page_url)">
                   <span aria-hidden="true">&laquo;</span>
                   </a>
                </li>
                <li v-for="num_page in pagination.last_page" :key="num_page" class="page-item">
-                  <a class="page-link" @click="fetchcategories(pagination.path+`?page=`+num_page)" href="#">{{num_page}}</a>
+                  <a class="page-link" @click="fetchcustomers(pagination.path+`?page=`+num_page)" href="#">{{num_page}}</a>
                </li>
                <li class="page-item" :class="[{disable:!pagination.next_page_url}]">
                   <a class="page-link" href="#" aria-label="Next"
-                     @click="fetchcategories(pagination.next_page_url)">
+                     @click="fetchcustomers(pagination.next_page_url)">
                   <span aria-hidden="true">&raquo;</span>
                   </a>
                </li>
@@ -109,26 +113,26 @@
          </nav>
       </div>
    </main>
-   <!-- Modal Add & Edit category -->
-   <div class="modal fade" id="addcategory" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+   <!-- Modal Add & Edit customer -->
+   <div class="modal fade" id="addcustomer" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
          <div class="modal-content">
             <div class="modal-header">
-               <h5 class="modal-title" id="addcategory">Add category</h5>
-               <p id="categoryAddSuccess"></p>
+               <h5 class="modal-title" id="addcustomer">Add customer</h5>
+               <p id="customerAddSuccess"></p>
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">&times;</span>
                </button>
             </div>
-            <form @submit.prevent="addcategory" enctype="multipart/form-data">
+            <form @submit.prevent="addcustomer" enctype="multipart/form-data">
                <div class="modal-body">
                   <div class="form-group">
                      <label for="input">Name</label>
-                     <input type="text" class="form-control" v-model="category.name" id="input" placeholder="Name">
+                     <input type="text" class="form-control" v-model="customer.name" id="input" placeholder="Name">
                   </div>
                </div>
                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" @click="modalClose" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-secondary" @click="modalClose(pagination.path+`?page=`+pagination.current_page)" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Save changes</button>
                </div>
             </form>
@@ -141,83 +145,132 @@
        data() {
            return {
               //object
-               categories:[]
-               ,category:{}
-               ,pagination:{}
+               customers:[]  
+               ,customer:{}
+               ,pagination:{}  
                ,edit:false
                ,searchQuery:null
-               ,searchCategories:[]
+               ,searchcustomers:[]   
            }
        },
        created() {
-           this.fetchcategories();
+           this.fetchcustomers();
        },
        methods: {
-            fetchcategories(page_url){
+            fetchcustomers(page_url){
                let vm = this;
-               let page = page_url || '/api/categories';
+               let page = page_url || '/api/customers';
                this.$axios.get('/sanctum/csrf-cookie').then(response => {
                 fetch(page)
                  .then(response=>response.json())
                  .then(response => {
-                     this.categories = response.data;
+                     this.customers = response.data;
+                     vm.makePagination(response.meta,response.links);
                  })
                  .catch(function (error) {
                      console.error(error);
                  });
                });
             },
-            addcategory() {
-              if(this.edit == false){
-                 let formData = new FormData();
-                  formData.append('name',this.category.name);
-                  this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                     this.$axios.post('/api/categories', formData)
-                     .then(response => {
-                        this.$router.push({name: 'categories'});
-                        alert('Add Success !');
-                     })
-                     .catch(function (error) {
+            createFetch(){
+               this.$axios.get('/sanctum/csrf-cookie').then(response => {
+                  fetch('/api/authors')
+                  .then(response=>response.json())
+                  .then(response => {
+                        this.authors = response.data;
+                        // console.log(response.data);
+                  })
+                  .catch(function (error) {
                         console.error(error);
-                     });
                   });
+                  fetch('/api/categories')
+                  .then(response=>response.json())
+                  .then(response => {
+                        this.categories = response.data;
+                  })
+                  .catch(function (error) {
+                        console.error(error);
+                  });
+               });
+            },
+            searchFetch(){
+               this.$axios.get('/sanctum/csrf-cookie').then(response => {
+                  fetch('/api/customers-search')
+                 .then(response=>response.json())
+                 .then(response => {
+                     this.searchcustomers = response.data;
+                     this.customers = this.searchcustomers;
+                 })
+                 .catch(function (error) {
+                     console.error(error);
+                 });
+               });
+            },
+            addcustomer() {
+              if(this.edit == false){
+               let formData = new FormData();
+               formData.append('name',this.customer.name);
+                this.$axios.get('/sanctum/csrf-cookie').then(response => {
+                    this.$axios.post('/api/customers', formData)
+                        .then(response => {
+                            this.$router.push({name: 'customers'});
+                            alert('Add Success !');
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                        });
+                });
               }else{
                   let formData = new FormData();
-                  formData.append('name',this.category.name);
-                  formData.append("_method","PUT");
-                  this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                     this.$axios.post(`/api/categories/${this.category.id}`,formData)
-                     .then(response => {
-                        this.$router.push({name: 'categories'});
-                        alert('Update Success !');
-                     })
-                     .catch(function (error) {
-                        console.error(error);
-                     });
-                  });
-               }
+                  formData.append('name',this.customer.name);
+               formData.append("_method","PUT");
+                this.$axios.get('/sanctum/csrf-cookie').then(response => {
+                    this.$axios.post(`/api/customers/${this.customer.id}`,formData)
+                        .then(response => {
+                            this.$router.push({name: 'customers'});
+                            alert('Update Success !');
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                        });
+                });
+             
+              }
             },
-            deletecategory(id) {
+            deletecustomer(id) {
                this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                   this.$axios.delete(`/api/categories/${id}`)
+                   this.$axios.delete(`/api/customers/${id}`)
                        .then(response => {
-                           let i = this.categories.map(item => item.id).indexOf(id); // find index of your object
-                           this.categories.splice(i, 1)
+                           let i = this.customers.map(item => item.id).indexOf(id); // find index of your object
+                           this.customers.splice(i, 1)
                        })
                        .catch(function (error) {
                            console.error(error);
                        });
                })
             },
-            editcategory(ecategory){
-              this.category.name = ecategory.name;
+            editcustomer(ecustomer){
+              this.customer.name = ecustomer.name;
+            
               this.edit = true;
-              this.category = ecategory;
+              this.customer = ecustomer;
             },
-            modalClose(){
-               this.category.name = "";
+            makePagination(meta,links) {
+               let pagination = {
+                   current_page:meta.current_page,
+                   last_page:meta.last_page,
+                   next_page_url:links.next,
+                   prev_page_url:links.prev,
+                   path:meta.path
+               };
+               this.pagination = pagination;
+            },
+         
+            modalClose(page){
+               this.customer.name = "";
+   
                this.edit = false;
-               this.fetchcategories();
+               this.fetchcustomers(page);
             },
             resultQuery(resources){
                if(this.searchQuery){
@@ -228,19 +281,6 @@
                }else{
                   return resources;
                }
-            },
-            searchFetch(){
-               this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                  fetch('/api/categories-search')
-                 .then(response=>response.json())
-                 .then(response => {
-                     this.searchCategories = response.data;
-                     this.categories = this.searchCategories;
-                 })
-                 .catch(function (error) {
-                     console.error(error);
-                 });
-               });
             },
             showSearch(){
                var x = document.getElementById("search");

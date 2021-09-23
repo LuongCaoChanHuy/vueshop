@@ -14,6 +14,10 @@ class UserController extends Controller
     {
         return UserResource::collection(User::paginate(20));
     }
+    public function customers()
+    {
+        return UserResource::collection(User::where('status',1)->paginate(20));
+    }
     /**
      * Register
      */
@@ -49,6 +53,7 @@ class UserController extends Controller
         $credentials = [
             'email' => $request->email,
             'password' => $request->password,
+            'status' => 0
         ];
 
         if (Auth::attempt($credentials)) {

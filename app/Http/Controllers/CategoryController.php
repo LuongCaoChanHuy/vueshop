@@ -19,6 +19,16 @@ class CategoryController extends Controller
         return CategoryResource::collection(Category::all());
     }
 
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search()
+    {
+        return CategoryResource::collection(Category::all());
+    }
+
     /**
      * Show the form for creating a new resource.
      *

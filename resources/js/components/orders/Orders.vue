@@ -240,7 +240,7 @@
             },
             createFetch(){
                this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                  fetch('/api/authors-search')
+                  fetch('/api/authors')
                   .then(response=>response.json())
                   .then(response => {
                         this.authors = response.data;

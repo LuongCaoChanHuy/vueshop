@@ -11,6 +11,13 @@ import Dashboard from '../pages/Dashboard.vue';
 import Products from '../components/products/Products.vue';
 // CATEGORY
 import Categories from '../components/categories/Categories.vue';
+// AUTHORS
+import Authors from '../components/authors/Authors.vue';
+// CUSTOMERS
+import Customers from '../components/customers/Customers.vue';
+// ORDERS
+import Orders from '../components/orders/Orders.vue';
+
 export const routes = [
     //home
     {
@@ -54,24 +61,24 @@ export const routes = [
         path: '/categories',
         component: Categories
     },
-    //authors
-    // {
-    //     name: 'authors',
-    //     path: '/authors',
-    //     component: Authors
-    // },
-    // //orders
-    // {
-    //     name: 'orders',
-    //     path: '/orders',
-    //     component: Orders
-    // },
-    // //customers
-    // {
-    //     name: 'customers',
-    //     path: '/customers',
-    //     component: Customers
-    // }
+    // authors
+    {
+        name: 'authors',
+        path: '/authors',
+        component: Authors
+    },
+    //orders
+    {
+        name: 'orders',
+        path: '/orders',
+        component: Orders
+    },
+    //customers
+    {
+        name: 'customers',
+        path: '/customers',
+        component: Customers
+    }
 ];
 
 const router = createRouter({

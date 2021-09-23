@@ -16,6 +16,16 @@ class AuthorController extends Controller
     public function index()
     {
         //
+        return AuthorResource::collection(Author::paginate(20));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search()
+    {
         return AuthorResource::collection(Author::all());
     }
 
@@ -27,6 +37,7 @@ class AuthorController extends Controller
     public function create()
     {
         //
+        
     }
 
     /**
@@ -38,6 +49,11 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         //
+        $author = new Author();
+        $author->name = $request->name;
+        $author->status = 1;
+        
+        $author->save();
     }
 
     /**
@@ -72,6 +88,10 @@ class AuthorController extends Controller
     public function update(Request $request, Author $author)
     {
         //
+        $author->name = $request->name;
+        $author->status = 1;
+
+        $author->save();
     }
 
     /**
@@ -83,5 +103,6 @@ class AuthorController extends Controller
     public function destroy(Author $author)
     {
         //
+        $author->delete();
     }
 }
